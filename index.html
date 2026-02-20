@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Theme Selector — WR/RB Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #080808;
+      --surface: #111111;
+      --card-bg: #161616;
+      --border: rgba(255,255,255,0.07);
+      --text: #f0f0f0;
+      --muted: #666;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 90px 24px 60px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 9vw, 110px);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      background: linear-gradient(160deg, #fff 30%, #888 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 16px;
+      color: #999;
+      max-width: 520px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: rgba(255,255,255,0.15);
+      margin: 0 auto 60px;
+    }
+
+    /* ─── SECTION LABELS ─── */
+    .section {
+      padding: 0 24px 80px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .section-label h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+    .section-label .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .section-label .line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── GRID ─── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    /* ─── THEME CARD ─── */
+    .theme-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+    }
+    .theme-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,255,255,0.18);
+    }
+    .theme-card.selected {
+      border-width: 2px;
+    }
+    .theme-card.selected::after {
+      content: '✓  SELECTED';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* ─── MOCKUP ─── */
+    .mockup {
+      aspect-ratio: 9/16;
+      max-height: 320px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    /* APP BAR */
+    .app-bar {
+      padding: 16px 18px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .bar-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.06em;
+      color: #fff;
+    }
+    .bar-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    .bar-icons {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .bar-icon {
+      width: 18px;
+      height: 18px;
+      opacity: 0.8;
+    }
+
+    /* BODY CONTENT */
+    .mockup-body {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    /* HERO BANNER INSIDE MOCKUP */
+    .mockup-banner {
+      border-radius: 12px;
+      height: 90px;
+      display: flex;
+      align-items: flex-end;
+      padding: 12px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .mockup-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 60%);
+    }
+    .mockup-banner-text {
+      position: relative;
+      z-index: 1;
+    }
+    .mockup-banner-text h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: #fff;
+      line-height: 1;
+    }
+    .mockup-banner-text span {
+      font-size: 9px;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* STAT PILLS */
+    .stat-row {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .stat-pill {
+      flex: 1;
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.05);
+    }
+    .stat-pill .s-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .stat-pill .s-lab {
+      font-size: 7.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #777;
+      margin-top: 2px;
+    }
+
+    /* FEED ITEMS */
+    .feed-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      padding: 9px 10px;
+    }
+    .feed-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      flex-shrink: 0;
+    }
+    .feed-lines { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .feed-line { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.12); }
+    .feed-line.short { width: 55%; }
+    .feed-line.shorter { width: 35%; }
+
+    /* BOTTOM NAV */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0 14px;
+      flex-shrink: 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .nav-dot { width: 18px; height: 3px; border-radius: 2px; }
+    .nav-dot.active { opacity: 1; }
+    .nav-dot.inactive { opacity: 0; }
+    .nav-icon-box { width: 22px; height: 22px; border-radius: 6px; background: rgba(255,255,255,0.08); }
+    .nav-icon-box.active-icon { background: rgba(255,255,255,0.2); }
+
+    /* CARD FOOTER */
+    .card-footer {
+      padding: 16px 18px 18px;
+      border-top: 1px solid var(--border);
+    }
+    .card-footer h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .card-footer p {
+      font-size: 12px;
+      color: #666;
+    }
+    .select-btn {
+      margin-top: 14px;
+      width: 100%;
+      padding: 11px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.15s ease;
+      color: #fff;
+    }
+    .select-btn:hover { opacity: 0.85; transform: scale(0.98); }
+
+    /* ─── SELECTED BANNER ─── */
+    #selected-banner {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10,10,10,0.95);
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(20px);
+      border-radius: 50px;
+      padding: 14px 28px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      z-index: 999;
+      white-space: nowrap;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .mockup { max-height: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">WR / RB Academy — Brand Identity</div>
+    <h1>Choose Your Theme</h1>
+    <p>Select the color direction that best represents your brand. Each palette was crafted for a premium, athlete-first experience.</p>
+    <div class="divider"></div>
+  </div>
+
+  <div id="selected-banner">🎨 Theme Selected</div>
+
+  <div id="sections"></div>
+
+  <div style="height: 80px;"></div>
+
+  <script>
+    const themes = [
+      {
+        section: "🏆 Championship Gold",
+        dot: "#FFB800",
+        variants: [
+          {
+            name: "Dynasty Gold",
+            desc: "Warm amber → bronze — legacy & dominance",
+            bar: "linear-gradient(135deg, #7B4F00 0%, #D4880A 40%, #FFB800 70%, #FFD966 100%)",
+            accent: "#FFB800",
+            banner: "linear-gradient(135deg, #3D2400, #7B4F00, #C47A00)",
+            stat: "#FFB800",
+            btn: "linear-gradient(135deg, #C47A00, #FFB800)",
+          },
+          {
+            name: "Black & Gold",
+            desc: "Pure black foundation with electric gold",
+            bar: "linear-gradient(135deg, #1A1100 0%, #3D2D00 40%, #CC9900 80%, #FFD700 100%)",
+            accent: "#FFD700",
+            banner: "linear-gradient(135deg, #111100, #2A2000, #554000)",
+            stat: "#FFD700",
+            btn: "linear-gradient(135deg, #997300, #FFD700)",
+          },
+          {
+            name: "Champagne Luxe",
+            desc: "Soft rose-gold gradient for premium appeal",
+            bar: "linear-gradient(135deg, #2C1A0E 0%, #7A4F28 40%, #C4935A 70%, #F0C98A 100%)",
+            accent: "#F0C98A",
+            banner: "linear-gradient(135deg, #1A0F05, #3D2210, #6B3A1A)",
+            stat: "#F0C98A",
+            btn: "linear-gradient(135deg, #8A5C2A, #F0C98A)",
+          },
+        ]
+      },
+      {
+        section: "⚡ Electric Blue",
+        dot: "#0094FF",
+        variants: [
+          {
+            name: "Cobalt Strike",
+            desc: "Deep navy → electric cobalt — authority & speed",
+            bar: "linear-gradient(135deg, #000E2A 0%, #001F5C 40%, #0047CC 75%, #0094FF 100%)",
+            accent: "#0094FF",
+            banner: "linear-gradient(135deg, #000A1A, #00174A, #002B8A)",
+            stat: "#0094FF",
+            btn: "linear-gradient(135deg, #003399, #0094FF)",
+          },
+          {
+            name: "Glacier",
+            desc: "Ice-blue to cyan — cool precision",
+            bar: "linear-gradient(135deg, #001F3A 0%, #004B70 40%, #007BB5 70%, #00CFFF 100%)",
+            accent: "#00CFFF",
+            banner: "linear-gradient(135deg, #001020, #002540, #004C70)",
+            stat: "#00CFFF",
+            btn: "linear-gradient(135deg, #005A88, #00CFFF)",
+          },
+          {
+            name: "Royal Neon",
+            desc: "Ultraviolet-blue — next-gen, digital",
+            bar: "linear-gradient(135deg, #06001F 0%, #1500AA 40%, #2B44FF 70%, #6699FF 100%)",
+            accent: "#4D77FF",
+            banner: "linear-gradient(135deg, #03000F, #0A0055, #1800AA)",
+            stat: "#4D77FF",
+            btn: "linear-gradient(135deg, #1100AA, #4D77FF)",
+          },
+        ]
+      },
+      {
+        section: "🔴 Fire Red",
+        dot: "#FF2020",
+        variants: [
+          {
+            name: "Blaze",
+            desc: "Deep crimson → fiery red — pure intensity",
+            bar: "linear-gradient(135deg, #1F0000 0%, #5C0000 40%, #CC1100 75%, #FF3300 100%)",
+            accent: "#FF3300",
+            banner: "linear-gradient(135deg, #100000, #300000, #660000)",
+            stat: "#FF3300",
+            btn: "linear-gradient(135deg, #991100, #FF3300)",
+          },
+          {
+            name: "Ember",
+            desc: "Crimson fading into burnt orange — heat",
+            bar: "linear-gradient(135deg, #1F0000 0%, #6B0800 40%, #CC3000 70%, #FF7020 100%)",
+            accent: "#FF5500",
+            banner: "linear-gradient(135deg, #0F0000, #2A0500, #5C1400)",
+            stat: "#FF5500",
+            btn: "linear-gradient(135deg, #882200, #FF5500)",
+          },
+          {
+            name: "Steel Red",
+            desc: "Cool-toned crimson — tactical & sharp",
+            bar: "linear-gradient(135deg, #0F0010 0%, #3A0022 40%, #880040 70%, #CC0055 100%)",
+            accent: "#FF1A66",
+            banner: "linear-gradient(135deg, #080008, #1A0010, #3A0028)",
+            stat: "#FF1A66",
+            btn: "linear-gradient(135deg, #880035, #FF1A66)",
+          },
+        ]
+      },
+      {
+        section: "💚 Turf Green",
+        dot: "#00DD55",
+        variants: [
+          {
+            name: "Endzone",
+            desc: "Field green → neon lime — gridiron energy",
+            bar: "linear-gradient(135deg, #001A08 0%, #004D1A 40%, #00A83A 75%, #00DD55 100%)",
+            accent: "#00DD55",
+            banner: "linear-gradient(135deg, #000D03, #00200A, #004B18)",
+            stat: "#00DD55",
+            btn: "linear-gradient(135deg, #008830, #00DD55)",
+          },
+          {
+            name: "Matrix",
+            desc: "Deep black → electric neon green — elite",
+            bar: "linear-gradient(135deg, #000E00 0%, #002200 40%, #006600 70%, #00FF44 100%)",
+            accent: "#00FF44",
+            banner: "linear-gradient(135deg, #000500, #001100, #003311)",
+            stat: "#00FF44",
+            btn: "linear-gradient(135deg, #005522, #00FF44)",
+          },
+          {
+            name: "Emerald Force",
+            desc: "Rich jewel-green — premium, powerful",
+            bar: "linear-gradient(135deg, #001510 0%, #003828 40%, #007755 75%, #00CC88 100%)",
+            accent: "#00CC88",
+            banner: "linear-gradient(135deg, #000A06, #001F15, #004433)",
+            stat: "#00CC88",
+            btn: "linear-gradient(135deg, #006644, #00CC88)",
+          },
+        ]
+      },
+      {
+        section: "👑 Royalty Purple",
+        dot: "#9933FF",
+        variants: [
+          {
+            name: "Crown",
+            desc: "Deep violet → electric purple — prestige",
+            bar: "linear-gradient(135deg, #0A0018 0%, #2A004A 40%, #6600CC 75%, #9933FF 100%)",
+            accent: "#9933FF",
+            banner: "linear-gradient(135deg, #050010, #150030, #330080)",
+            stat: "#9933FF",
+            btn: "linear-gradient(135deg, #5500AA, #9933FF)",
+          },
+          {
+            name: "Ultraviolet",
+            desc: "UV spectrum — high-tech, futuristic",
+            bar: "linear-gradient(135deg, #05000F 0%, #1A0055 40%, #5500DD 70%, #AA44FF 100%)",
+            accent: "#CC66FF",
+            banner: "linear-gradient(135deg, #030008, #0F0033, #2A0088)",
+            stat: "#CC66FF",
+            btn: "linear-gradient(135deg, #5500BB, #CC66FF)",
+          },
+          {
+            name: "Midnight Plum",
+            desc: "Warm magenta-purple — bold, unique",
+            bar: "linear-gradient(135deg, #0F000F 0%, #330033 40%, #770066 70%, #CC0099 100%)",
+            accent: "#EE00BB",
+            banner: "linear-gradient(135deg, #060006, #180015, #400035)",
+            stat: "#EE00BB",
+            btn: "linear-gradient(135deg, #880066, #EE00BB)",
+          },
+        ]
+      },
+      {
+        section: "🌊 Silver & Chrome",
+        dot: "#CCCCCC",
+        variants: [
+          {
+            name: "Chrome",
+            desc: "Steel silver gradient — sleek & elite",
+            bar: "linear-gradient(135deg, #0A0A0A 0%, #2A2A2A 40%, #707070 75%, #C0C0C0 100%)",
+            accent: "#C0C0C0",
+            banner: "linear-gradient(135deg, #060606, #141414, #2A2A2A)",
+            stat: "#C0C0C0",
+            btn: "linear-gradient(135deg, #555555, #C0C0C0)",
+          },
+          {
+            name: "Arctic White",
+            desc: "Ice-cold white → silver — minimal, refined",
+            bar: "linear-gradient(135deg, #080808 0%, #1A1A1A 30%, #404040 65%, #AAAAAA 100%)",
+            accent: "#DDDDDD",
+            banner: "linear-gradient(135deg, #040404, #0F0F0F, #222222)",
+            stat: "#DDDDDD",
+            btn: "linear-gradient(135deg, #444444, #DDDDDD)",
+          },
+          {
+            name: "Titanium",
+            desc: "Warm silver with blue-grey undertones",
+            bar: "linear-gradient(135deg, #080C10 0%, #1A2430 40%, #405060 70%, #8AAABB 100%)",
+            accent: "#8AAABB",
+            banner: "linear-gradient(135deg, #040608, #0C1418, #182430)",
+            stat: "#8AAABB",
+            btn: "linear-gradient(135deg, #2A3C48, #8AAABB)",
+          },
+        ]
+      },
+    ];
+
+    let selectedId = null;
+
+    function createMockup(t) {
+      return `
+        <div class="mockup">
+          <!-- APP BAR -->
+          <div class="app-bar" style="background: ${t.bar};">
+            <div class="bar-logo">ROUTE<span style="opacity:0.6">ONE</span></div>
+            <div class="bar-icons">
+              <svg class="bar-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <div class="bar-avatar" style="border-color: ${t.accent}44;"></div>
+            </div>
+          </div>
+
+          <!-- BODY -->
+          <div class="mockup-body">
+            <!-- Banner -->
+            <div class="mockup-banner" style="background: ${t.banner};">
+              <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.015) 0px,rgba(255,255,255,0.015) 1px,transparent 1px,transparent 12px);"></div>
+              <div class="mockup-banner-text">
+                <h4>WR MASTERCLASS</h4>
+                <span>Route Running · Week 3</span>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stat-row">
+              <div class="stat-pill" style="border: 1px solid ${t.accent}22;">
+                <div class="s-val" style="color:${t.accent}">142</div>
+                <div class="s-lab">Members</div>
+              </div>
+              <div class="stat-pill" style="border: 1px solid ${t.accent}22;">
+                <div class="s-val" style="color:${t.accent}">38</div>
+                <div class="s-lab">Lessons</div>
+              </div>
+              <div class="stat-pill" style="border: 1px solid ${t.accent}22;">
+                <div class="s-val" style="color:${t.accent}">9.4</div>
+                <div class="s-lab">Rating</div>
+              </div>
+            </div>
+
+            <!-- Feed items -->
+            <div class="feed-item">
+              <div class="feed-thumb" style="background: ${t.accent}33; border: 1.5px solid ${t.accent}55;"></div>
+              <div class="feed-lines">
+                <div class="feed-line" style="background: rgba(255,255,255,0.15); width: 80%;"></div>
+                <div class="feed-line short" style="background: rgba(255,255,255,0.08);"></div>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-thumb" style="background: rgba(255,255,255,0.08);"></div>
+              <div class="feed-lines">
+                <div class="feed-line" style="background: rgba(255,255,255,0.12); width: 70%;"></div>
+                <div class="feed-line shorter" style="background: rgba(255,255,255,0.06);"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTTOM NAV -->
+          <div class="bottom-nav">
+            ${['Home','Courses','Community','Progress'].map((label, i) => `
+              <div class="nav-item">
+                <div class="nav-icon-box ${i===0 ? 'active-icon' : ''}" style="${i===0 ? `background:${t.accent}33; border: 1px solid ${t.accent}55;` : ''}"></div>
+                <div class="nav-dot ${i===0 ? 'active' : 'inactive'}" style="background:${t.accent};"></div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function buildPage() {
+      const container = document.getElementById('sections');
+
+      themes.forEach((section, si) => {
+        const secEl = document.createElement('div');
+        secEl.className = 'section';
+        secEl.innerHTML = `
+          <div class="section-label">
+            <div class="dot" style="background: ${section.dot}; box-shadow: 0 0 10px ${section.dot}88;"></div>
+            <h2>${section.section}</h2>
+            <div class="line"></div>
+          </div>
+          <div class="grid" id="grid-${si}"></div>
+        `;
+        container.appendChild(secEl);
+
+        const grid = secEl.querySelector(`#grid-${si}`);
+
+        section.variants.forEach((v, vi) => {
+          const id = `${si}-${vi}`;
+          const card = document.createElement('div');
+          card.className = 'theme-card';
+          card.id = `card-${id}`;
+          card.innerHTML = `
+            ${createMockup(v)}
+            <div class="card-footer">
+              <h3>${v.name}</h3>
+              <p>${v.desc}</p>
+              <button class="select-btn" style="background: ${v.btn};" onclick="selectTheme('${id}', '${v.name}', '${section.section}')">
+                Select This Theme
+              </button>
+            </div>
+          `;
+          card.style.boxShadow = `0 0 0 0 ${v.accent}`;
+          card.addEventListener('mouseenter', () => {
+            if (selectedId !== id)
+              card.style.boxShadow = `0 8px 40px ${v.accent}22`;
+          });
+          card.addEventListener('mouseleave', () => {
+            if (selectedId !== id)
+              card.style.boxShadow = `0 0 0 0 ${v.accent}`;
+          });
+          grid.appendChild(card);
+        });
+      });
+    }
+
+    function selectTheme(id, name, section) {
+      // Remove previous selection
+      document.querySelectorAll('.theme-card').forEach(c => {
+        c.classList.remove('selected');
+        c.style.borderColor = '';
+      });
+
+      selectedId = id;
+      const card = document.getElementById(`card-${id}`);
+      card.classList.add('selected');
+
+      // Find accent color
+      const [si, vi] = id.split('-').map(Number);
+      const v = themes[si].variants[vi];
+      card.style.borderColor = v.accent;
+      card.style.boxShadow = `0 0 40px ${v.accent}33`;
+
+      // Banner
+      const banner = document.getElementById('selected-banner');
+      banner.style.borderColor = v.accent + '55';
+      banner.innerHTML = `✓&nbsp; <span style="color:${v.accent}">${name}</span>&nbsp; selected`;
+      banner.style.display = 'block';
+
+      // Re-trigger animation
+      banner.style.animation = 'none';
+      banner.offsetHeight;
+      banner.style.animation = '';
+    }
+
+    buildPage();
+  </script>
+</body>
+</html>
